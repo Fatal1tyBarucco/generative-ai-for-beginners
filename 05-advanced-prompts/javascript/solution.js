@@ -55,6 +55,7 @@ import express from 'express';
 import https from 'https';
 import fs from 'fs';
 import { check, validationResult } from 'express-validator';
+import escapeHtml from 'escape-html';
 
 const app = express();
 
@@ -74,7 +75,9 @@ app.get('/', [
   }
 
   const { name, email } = req.query;
-  res.send(`Hello ${name} (${email})!`);
+  const safeName = escapeHtml(String(name ?? ''));
+  const safeEmail = escapeHtml(String(email ?? ''));
+  res.send(`Hello ${safeName} (${safeEmail})!`);
 });
 
 // Use HTTPS instead of HTTP
